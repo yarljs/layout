@@ -1,11 +1,10 @@
 import {Reducable} from '@yarljs/reduce';
 import {compose} from 'redux';
 
-function layoutRenameLayer(target, newName) {
+function layoutNewLayer(target) {
   return {
     type: this.type,
-    target,
-    newName
+    target
   };
 }
 
@@ -14,20 +13,19 @@ export default compose(
     let res;
     if(typeof action.target === "string")
     {
-      res = state.yarljs_layers.map((e, i) => {
-        return (e.label === action.target) ? {...e, label: action.newName} : e;
+      res = state.yarljs_layers.filter((e, i) => {
+        return (e.label !== action.target);
       });
     }
     else if(typeof action.target === "number")
     {
-      res = state.yarljs_layers.map((e, i) => {
-        return (i === action.target) ? {...e, label: action.newName} : e;
+      res = state.yarljs_layers.filter((e, i) => {
+        return (i !== action.target);
       });
     }
-
     return {
       ...state,
       yarljs_layers: res
     };
   })
-)(layoutRenameLayer)
+)(layoutNewLayer)
