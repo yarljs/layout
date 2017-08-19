@@ -1,9 +1,8 @@
-import newLayer from './newLayer';
-import renameLayer from './renameLayer';
-import setLayerIndex from './setLayerIndex';
-
-export default {
-  newLayer,
-  renameLayer,
-  setLayerIndex
+import * as layer from './layer';
+import * as pane from './pane';
+import * as hud from './hud';
+export {
+  layer,
+  pane,
+  hud
 }

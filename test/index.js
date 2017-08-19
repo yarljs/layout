@@ -4,7 +4,7 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider, connect} from 'react-redux';
 
 import {reduce, Actions} from '@yarljs/reduce';
-import {defaultState} from '../src';
+import {actions, Components, defaultState} from '../src';
 
 
 const store = createStore(
@@ -28,6 +28,6 @@ window.$s = store.getState;
 
 ReactDOM.render(
   <Provider store={store}>
-    <Root />
+    <Components.Layout />
   </Provider>
   , document.getElementById('react-root'));

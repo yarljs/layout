@@ -1,15 +1,9 @@
 import {Reducable} from '@yarljs/reduce';
 import {compose} from 'redux';
 
-function layoutNewLayer(name) {
+function layoutToggleHud() {
   return {
     type: this.type,
-    payload: {
-      label: name,
-      panes: [
-
-      ]
-    }
   };
 }
 
@@ -17,7 +11,10 @@ export default compose(
   Reducable((state, action) => {
     return {
       ...state,
-      yarljs_layers: [...state.yarljs_layers, action.payload]
+      yarljs_layer_hud: {
+        ...state.yarljs_layer_hud,
+        toggled: !state.yarljs_layer_hud.toggled
+      }
     };
   })
-)(layoutNewLayer)
+)(layoutToggleHud)
