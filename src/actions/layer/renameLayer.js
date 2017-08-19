@@ -1,5 +1,8 @@
 import {Reducable} from '@yarljs/reduce';
 import {compose} from 'redux';
+import dotProp from 'dot-prop-immutable';
+
+import {layerByIndexOrLabel} from '../../libs';
 
 function layoutRenameLayer(target, newName) {
   return {
@@ -11,23 +14,10 @@ function layoutRenameLayer(target, newName) {
 
 export default compose(
   Reducable((state, action) => {
-    let res;
-    if(typeof action.target === "string")
-    {
-      res = state.yarljs_layers.map((e, i) => {
-        return (e.label === action.target) ? {...e, label: action.newName} : e;
-      });
-    }
-    else if(typeof action.target === "number")
-    {
-      res = state.yarljs_layers.map((e, i) => {
-        return (i === action.target) ? {...e, label: action.newName} : e;
-      });
-    }
+    let i = layerByIndexOrLabel(state.yarljs_layers, action);
 
-    return {
-      ...state,
-      yarljs_layers: res
-    };
+    return (i === -1)
+    ? state
+    : dotProp.set(state, `yarljs_layers.${i}.label`, action.newName);
   })
 )(layoutRenameLayer)

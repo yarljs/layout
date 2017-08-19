@@ -1,5 +1,8 @@
 import {Reducable} from '@yarljs/reduce';
 import {compose} from 'redux';
+import dotProp from 'dot-prop-immutable';
+
+import {layerByIndexOrLabel} from '../../libs';
 
 function layoutSetLayerIndex(target, newIndex) {
   return {
@@ -11,27 +14,20 @@ function layoutSetLayerIndex(target, newIndex) {
 
 export default compose(
   Reducable((state, action) => {
-    let index = -1;
-    if(typeof action.target === "string")
-    {
-      index = state.yarljs_layers.map((e, i) => {
-        return (e.label === action.target) ? i : e;
-      }, -1);
-    }
-    else if(typeof action.target === "number")
-    {
-      index = action.target
-    }
-    if( index < 0 || index > state.yarljs_layers.length)
+    let i = layerByIndexOrLabel(state.yarljs_layers, action);
+
+    if (i === -1)
     {
       return state;
     }
-    let res = state.yarljs_layers.slice();
-    let i = res.splice(index, 1)[0];
-    res.splice(action.newIndex, 0, i);
-    return {
-      ...state,
-      yarljs_layers: res
-    };
+
+    let arr = dotProp.get(state, `yarljs_layers`);
+    let t = arr.splice(i, 1);
+    dotProp.set(state, `yarljs_layers`,[
+      ...array.slice(0, action.newIndex),
+      t,
+      ...array.slice(action.newIndex)
+    ]);
+
   })
 )(layoutSetLayerIndex)

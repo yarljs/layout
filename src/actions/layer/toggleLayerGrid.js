@@ -1,5 +1,8 @@
 import {Reducable} from '@yarljs/reduce';
 import {compose} from 'redux';
+import dotProp from 'dot-prop-immutable';
+
+import {layerByIndexOrLabel} from '../../libs';
 
 function layoutToggleLayerGrid(target) {
   return {
@@ -10,23 +13,10 @@ function layoutToggleLayerGrid(target) {
 
 export default compose(
   Reducable((state, action) => {
-    let res;
-    if(typeof action.target === "string")
-    {
-      res = state.yarljs_layers.map((e, i) => {
-        return (e.label === action.target) ? {...e, grid: {...e.grid, toggled: !e.grid.toggled} : e;
-      });
-    }
-    else if(typeof action.target === "number")
-    {
-      res = state.yarljs_layers.map((e, i) => {
-        return (i === action.target) ? {...e, grid: {...e.grid, toggled: !e.grid.toggled} : e;
-      });
-    }
+    let i = layerByIndexOrLabel(state.yarljs_layers, action);
 
-    return {
-      ...state,
-      yarljs_layers: res
-    };
+    return (i === -1)
+    ? state
+    : dotProp.toggle(state, `yarljs_layers.${i}.grid.toggled`);
   })
 )(layoutToggleLayerGrid)

@@ -1,5 +1,5 @@
-import layerByNameOrIndex from './layerByNameOrIndex';
+import layerByIndexOrLabel from './layerByIndexOrLabel';
 
 export {
-  layerByNameOrIndex
+  layerByIndexOrLabel
 }

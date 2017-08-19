@@ -1,10 +1,12 @@
 import {Reducable} from '@yarljs/reduce';
 import {compose} from 'redux';
+import dotProp from 'dot-prop-immutable';
+
 
 function layoutNewLayer(name) {
   return {
     type: this.type,
-    payload: {
+    layer: {
       label: name,
       grid: {
         rows: 1,
@@ -12,7 +14,7 @@ function layoutNewLayer(name) {
         toggled: false
       },
       panes: [
-        
+
       ]
     }
   };
@@ -20,9 +22,6 @@ function layoutNewLayer(name) {
 
 export default compose(
   Reducable((state, action) => {
-    return {
-      ...state,
-      yarljs_layers: [...state.yarljs_layers, action.payload]
-    };
+    return dotProp.set(state, 'yarljs_layers', (e) => {e.push(action.layer)})
   })
 )(layoutNewLayer)
