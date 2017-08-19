@@ -42,10 +42,10 @@ class Hud extends React.Component {
       height: "100%"
     }
     const keymap = {
-      'addRow' : 'ctrl+alt+s',
-      'addCol' : 'ctrl+alt+d',
-      'removeRow' : 'ctrl+alt+w',
-      'removeCol' : 'ctrl+alt+a',
+      'addRow' : ['ctrl+alt+s', 'ctrl+k'],
+      'addCol' : ['ctrl+alt+d', 'ctrl+l'],
+      'removeRow' : ['ctrl+alt+w', 'ctrl+i'],
+      'removeCol' : ['ctrl+alt+a', 'ctrl+j'],
     }
     const lSLG = $a.layoutSetHudGrid;
     const handlers = {
