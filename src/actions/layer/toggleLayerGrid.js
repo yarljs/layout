@@ -4,10 +4,10 @@ import dotProp from 'dot-prop-immutable';
 
 import {layerByIndexOrLabel} from '../../libs';
 
-function layoutToggleLayerGrid(target) {
+function layoutToggleLayerGrid(layer) {
   return {
     type: this.type,
-    target,
+    layer,
   };
 }
 

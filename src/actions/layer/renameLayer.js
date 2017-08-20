@@ -4,10 +4,10 @@ import dotProp from 'dot-prop-immutable';
 
 import {layerByIndexOrLabel} from '../../libs';
 
-function layoutRenameLayer(target, newName) {
+function layoutRenameLayer(layer, newName) {
   return {
     type: this.type,
-    target,
+    layer,
     newName
   };
 }

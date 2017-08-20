@@ -1,10 +1,18 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import colors from '../data/colors';
 import {HotKeys} from 'react-hotkeys';
 
+import Pane from './pane';
+
+import {randomColor} from '../libs';
 
 const st = (e)=>{e.preventDefault(); return false;}
+
+const tG = (toggle, fn) => {
+  return (e) => {
+    if(toggle) {fn(e);  st(e);}
+  }
+}
 
 class Layer extends React.Component {
   constructor(props) {
@@ -17,12 +25,11 @@ class Layer extends React.Component {
     let res = [];
     const x = this.props.grid.rows;
     const y = this.props.grid.columns;
-    const c = Object.keys(colors);
     for(let i = 1; i <= x; i++)
     for(let j = 1; j <= y; j++)
     {
       const style = {
-        backgroundColor: c[Math.floor(Math.random() * (c.length -1))],
+        backgroundColor: randomColor(),
         border: "solid",
         gridRow: `${i}`,
         gridColumn: `${j}`
@@ -33,12 +40,19 @@ class Layer extends React.Component {
   }
 
   getBody() {
-
+      const body = (this.props.panes.length) ? this.props.panes.map((e, i) => {
+        return (
+          <Pane key={i} index={i} gridColor={randomColor()} layerIndex={this.props.index} />
+        )
+      })
+      : <div>No Panes</div>
+    return body
   }
 
   render() {
 
     const {grid, label} = this.props;
+    const {toggled} = grid;
     const style = {
       display: "grid",
       grid: `repeat(${grid.rows}, auto) / repeat(${grid.columns}, auto)`,
@@ -50,19 +64,27 @@ class Layer extends React.Component {
       'addCol' : ['ctrl+alt+d', 'ctrl+l'],
       'removeRow' : ['ctrl+alt+w', 'ctrl+i'],
       'removeCol' : ['ctrl+alt+a', 'ctrl+j'],
+      'toggleGrid' : ['ctrl+alt+v', 'ctrl+/'],
+      'addPane': ['ctrl+.'],
     }
-    const lSLG = (label === "hud") ? $a.layoutSetHudGrid: $a.layoutSetLayerGrid;
+    const lSLG = $a.layoutSetLayerGrid;
+    const lTLG = $a.layoutToggleLayerGrid;
+    const lAP = $a.layoutAddPane;
+    //XXX Disable these events if they are dispatched while they grid view is hidden
     const handlers = {
-      'addRow': (e) => {$d(lSLG(label, {...grid, rows: grid.rows + 1})); st(e)},
-      'addCol': (e) => {$d(lSLG(label, {...grid, columns: grid.columns + 1})); st(e)},
-      'removeRow': (e) => {$d(lSLG(label, {...grid, rows: Math.max(1, grid.rows - 1)})); st(e)},
-      'removeCol': (e) => {$d(lSLG(label, {...grid, columns: Math.max(1, grid.columns - 1)})); st(e)},
+      'addRow': tG(toggled, (e) => {$d(lSLG(label, {...grid, rows: grid.rows + 1}))}),
+      'addCol': tG(toggled, (e) => {$d(lSLG(label, {...grid, columns: grid.columns + 1}))}),
+      'removeRow': tG(toggled, (e) => {$d(lSLG(label, {...grid, rows: Math.max(1, grid.rows - 1)}))}),
+      'removeCol': tG(toggled, (e) => {$d(lSLG(label, {...grid, columns: Math.max(1, grid.columns - 1)}))}),
+
+      'addPane': () => {$d(lAP(label, `${label}.EmptyPane`))},
+      'toggleGrid': (e) => {$d(lTLG(label)); st(e)},
     }
 
     return (
       <HotKeys id={`layer-${label}-focus`} style={{width: "100%", height: "100%"}} keyMap={keymap} handlers={handlers}>
         <div style={style}>
-          {this.getGrid()}
+          {(this.props.grid.toggled) ? this.getGrid(): this.getBody()}
         </div>
       </HotKeys>
 

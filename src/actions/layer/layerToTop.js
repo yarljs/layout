@@ -2,10 +2,10 @@ import {Reducable} from '@yarljs/reduce';
 import {compose} from 'redux';
 import {layerByIndexOrLabel} from '../../libs';
 
-function layoutLayerToTop(target, newIndex) {
+function layoutLayerToTop(layer, newIndex) {
   return {
     type: this.type,
-    target,
+    layer,
     newIndex
   };
 }

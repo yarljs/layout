@@ -34,7 +34,7 @@ class Layout extends React.Component {
     const body = this.props.layers.map((e, i) => {
       return (
         <div key={i} style={{backgroundColor: "white", position: "absolute", zOrder: i,width: "100%", height:"100%"}}>
-          <Layer  focused={i === this.props.layers.length - 1 && !this.props.hud.toggled} {...e}/>
+          <Layer index={i} {...e}/>
         </div>
       )
     });

@@ -4,10 +4,10 @@ import dotProp from 'dot-prop-immutable';
 
 import {layerByIndexOrLabel} from '../../libs';
 
-function layoutSetLayerGrid(target, grid) {
+function layoutSetLayerGrid(layer, grid) {
   return {
     type: this.type,
-    target,
+    layer,
     grid
   };
 }

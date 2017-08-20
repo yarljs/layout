@@ -1,28 +1,33 @@
 import {Reducable} from '@yarljs/reduce';
 import {compose} from 'redux';
+import dotProp from 'dot-prop-immutable';
 
-function layoutAddPane(layer, name) {
+import {layerByIndexOrLabel} from '../../libs';
+
+
+function layoutAddPane(layer, label) {
   return {
     type: this.type,
-    payload: {
-      label: name,
+    layer: layer,
+    pane: {
+      label,
       grid: {
-        rows: 1,
-        columns: 1,
-        toggled: false
-      },
-      panes: [
-
-      ]
+        fromRow: 1,
+        toRow: 2,
+        fromColumn: 1,
+        toColumn: 2
+      }
     }
   };
 }
 
 export default compose(
   Reducable((state, action) => {
-    return {
-      ...state,
-      yarljs_layers: [...state.yarljs_layers, action.payload]
-    };
+    let index = layerByIndexOrLabel(state.yarljs_layers, action);
+    return dotProp.set(
+      state,
+      `yarljs_layers.${index}.panes`,
+      [...dotProp.get(state, `yarljs_layers.${index}.panes`), action.pane]
+    );
   })
 )(layoutAddPane)

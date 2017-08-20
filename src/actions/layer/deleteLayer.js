@@ -4,10 +4,10 @@ import dotProp from 'dot-prop-immutable';
 
 import {layerByIndexOrLabel} from '../../libs';
 
-function layoutNewLayer(target) {
+function layoutNewLayer(layer) {
   return {
     type: this.type,
-    target
+    layer
   };
 }
 

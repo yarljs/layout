@@ -4,6 +4,7 @@ import renameLayer from './renameLayer';
 import setLayerGrid from './setLayerGrid';
 import setLayerIndex from './setLayerIndex';
 import layerToTop from './layerToTop';
+import toggleLayerGrid from './toggleLayerGrid';
 
 export {
   deleteLayer,
@@ -12,4 +13,5 @@ export {
   setLayerGrid,
   setLayerIndex,
   layerToTop,
+  toggleLayerGrid,
 };
