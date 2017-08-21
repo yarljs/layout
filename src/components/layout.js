@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {HotKeys} from 'react-hotkeys';
 
@@ -11,6 +12,15 @@ const st = (e)=>{e.preventDefault(); return false;}
 class Layout extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  getChildContext() {
+    const reg = (this.props.reactRegistry)
+      ? this.props.registry
+      : (query) => {return (<div>Default Registry: {query.toString()}</div>)}
+    return {
+      componentRegistry: reg
+    };
   }
 
   getHud(hud) {
@@ -57,6 +67,10 @@ class Layout extends React.Component {
     );
   }
 }
+
+Layout.childContextTypes = {
+    componentRegistry: PropTypes.func
+};
 
 export default connect((state, ownProps) => {
   return {

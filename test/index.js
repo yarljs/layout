@@ -26,6 +26,11 @@ window.$d = store.dispatch;
 window.$a = Actions;
 window.$s = store.getState;
 
+function registry(query) {
+
+}
+
+
 ReactDOM.render(
   <Provider store={store}>
     <Components.Layout />

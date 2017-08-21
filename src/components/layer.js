@@ -77,7 +77,7 @@ class Layer extends React.Component {
       'removeRow': tG(toggled, (e) => {$d(lSLG(label, {...grid, rows: Math.max(1, grid.rows - 1)}))}),
       'removeCol': tG(toggled, (e) => {$d(lSLG(label, {...grid, columns: Math.max(1, grid.columns - 1)}))}),
 
-      'addPane': () => {$d(lAP(label, `${label}.EmptyPane`))},
+      'addPane': () => {$d(lAP(label, `EmptyPane`))},
       'toggleGrid': (e) => {$d(lTLG(label)); st(e)},
     }
 

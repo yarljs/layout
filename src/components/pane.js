@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {HotKeys} from 'react-hotkeys';
+import PropTypes from 'prop-types';
 
 import {randomColor} from '../libs';
 
@@ -34,14 +35,20 @@ class Pane extends React.Component {
   }
 
   getBody() {
+    const body = this.context.componentRegistry({
+      layer: this.props.layer.label,
+      pane: this.props.pane.label
+    })
     return (
-      <div>{this.props.label}</div>
+      <div>
+        {body}
+      </div>
     )
   }
 
   render() {
     const layer = this.props.layer;
-    const grid = this.props.grid;
+    const grid = this.props.pane.grid;
 
     const keymap = {
       'paneDown' : ['ctrl+alt+s', 'ctrl+k'],
@@ -146,15 +153,19 @@ class Pane extends React.Component {
     }
     return (
       <HotKeys style={style} keyMap={keymap} handlers={handlers}>
-        {(this.props.grid.toggled) ? this.getGrid(): this.getBody()}
+        {(grid.toggled) ? this.getGrid(): this.getBody()}
       </HotKeys>
     );
   }
 }
 
+Pane.contextTypes = {
+  componentRegistry: PropTypes.func
+};
+
 export default connect((state, ownProps) => {
   return {
     layer: state.yarljs_layers[ownProps.layerIndex],
-    ...state.yarljs_layers[ownProps.layerIndex].panes[ownProps.index]
+    pane: state.yarljs_layers[ownProps.layerIndex].panes[ownProps.index]
   }
 })(Pane);
